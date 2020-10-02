@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for artist in displayedartists %}
+    <div><a href="/artist">{{ artist.name }}</a></div>
+    <br>
+{% endfor %}
+</body>
+{% endblock %}
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ artistName }}</title>
+</head>
+<body>
+<h2>{{ artistName }}</h2>
+<h3>Hometown: {{ hometown }}</h3>
+<p>{{ description }}</p>
+<h3>Events</h3>
+<ul>
+    <li>All events currently on hold. </li>
+</ul>
+</body>
+{% endblock %}
+</html>
