@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<body>
+    <hr>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>{{ form.name.label }}
+        {{ form.name(size=32) }}</p>
+        <p>{{ form.description.label }}
+        {{ form.description(size=32) }}</p>
+        <p>{{ form.time.label }}
+        {{ form.time(class='datepicker') }}</p>
+        <p>{{ form.venue.label }}</p>
+        <p>{{ form.venue(size=32) }}</p>
+        <p>{{ form.artists.label }}</p>
+        <p>{{ form.artists(size=32) }}</p>
+        <p>{{form.submit}}</p>
+    </form>
+</body>
+{% endblock %}
+</html>

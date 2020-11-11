@@ -12,7 +12,9 @@
 <p>{{ description }}</p>
 <h3>Events</h3>
 <ul>
-    <li>All events currently on hold. </li>
+       {% for event in event_list %}
+        <li><b>{{ event.name }}</b> </li>
+       {% endfor %}
 </ul>
 </body>
 {% endblock %}

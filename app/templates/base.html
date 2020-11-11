@@ -7,6 +7,14 @@
         <div><a href="/landing">Ithacartists</a></div>
         <div><a href="/artistlist">Artists</a></div>
         <div><a href="/newartist">New Artist</a></div>
+        <div><a href="/newevent">New Event</a></div>
+        <div><a href="/newvenue">New Venue</a></div>
+        <div><a href="/register">Register</a></div>
+        {% if current_user.is_anonymous %}
+        <div><a href="/login">Login</a></div>
+            {% else %}
+            <div><a href="/logout">Logout</a></div>
+        {% endif %}
         <hr>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
