@@ -1,28 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Welcome to Ithacartists!</title>
-    </head>
+{% extends 'bootstrap/base.html' %}
+
+    {% block title %}
+    {% if title %}{{ title }} - Ithacartists{% else %}Welcome to Ithacartists!{% endif %}
+{% endblock %}
+    {% block navbar %}
+    <nav class="navbar navbar-default">
+        <li class="nav-item">
+        <a class="nav-link" href="/landing">Ithacartists</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/artistlist">Artists</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/newartist">New Artist</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/newevent">New Event</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/newvenue">New Venue</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/register">Register</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+        </li>
+        {% endblock %}
+
+
+    </nav>
     <body>
-        <div><a href="/landing">Ithacartists</a></div>
-        <div><a href="/artistlist">Artists</a></div>
-        <div><a href="/newartist">New Artist</a></div>
-        <div><a href="/newevent">New Event</a></div>
-        <div><a href="/newvenue">New Venue</a></div>
-        <div><a href="/register">Register</a></div>
-        {% if current_user.is_anonymous %}
-        <div><a href="/login">Login</a></div>
-            {% else %}
-            <div><a href="/logout">Logout</a></div>
-        {% endif %}
-        <hr>
+        {% block content %}
+            <div class="container">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
-                    {{  message }}
+                    <div class="alert alert-info" role="alert">{{ message }}</div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        {% block content %}{% endblock %}
+                {% block app_content %}{% endblock %}
+            </div>
+        {% endblock %}
     </body>
 </html>

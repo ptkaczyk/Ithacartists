@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block content %}
+{% block app_content %}
 {% for artist in artists %}
     <div><a href="{{ url_for('artist', name=artist.firstname) }}">{{ artist.firstname }}</a></div>
     <br>
