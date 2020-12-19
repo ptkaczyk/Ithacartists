@@ -1,31 +1,38 @@
 {% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
     {% block title %}
     {% if title %}{{ title }} - Ithacartists{% else %}Welcome to Ithacartists!{% endif %}
 {% endblock %}
     {% block navbar %}
     <nav class="navbar navbar-default">
+        {% if current_user.is_anonymous %}
+            <li class="nav-item">
+            <a class="nav-link" href="/landing">Zero-Waste Market</a>
+            </li>
         <li class="nav-item">
-        <a class="nav-link" href="/landing">Ithacartists</a>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link" href="/artistlist">Artists</a>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link" href="/newartist">New Artist</a>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link" href="/newevent">New Event</a>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link" href="/newvenue">New Venue</a>
+        <a class="nav-link" href="/login">Login</a>
         </li>
         <li class="nav-item">
         <a class="nav-link" href="/register">Register</a>
         </li>
+        {% else %}
+            <li class="nav-item">
+            <a class="nav-link" href="/landing">Zero-Waste Market</a>
+            </li>
         <li class="nav-item">
-        <a class="nav-link" href="/login">Login</a>
+        <a class="nav-link" href="/user/Peter")>Your Page</a>
         </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/newProduct">New Product</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/search">Search</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+        </li>
+        {% endif %}
         {% endblock %}
 
 

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block app_content %}
+<h1>Search</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        <br>
+            {% for product in searchable%}
+                <div><a href="{{ url_for('product', productName=product.name) }}">{{ product.name }}</a></div>
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+</html>

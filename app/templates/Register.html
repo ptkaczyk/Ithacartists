@@ -1,14 +1,10 @@
 {% extends "base.html" %}
 {% block app_content %}
-<body>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>{{ form.username.label }}
-            {{ form.username(size=32) }}</p>
-        <p>{{ form.password.label }}
-        {{ form.password(size=32) }}</p>
-        <p>{{ form.submit }}</p>
-    </form>
-</body>
+    <h1>Register</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
 {% endblock %}
 </html>

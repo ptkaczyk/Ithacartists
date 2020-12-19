@@ -20,7 +20,7 @@ def artistlist():
 
 @app.route('/newartist')
 def newartist():
-    return render_template('NewArtist.html')
+    return render_template('NewProduct.html')
 
 
 @app.route('/artist')

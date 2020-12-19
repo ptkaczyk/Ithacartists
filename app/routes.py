@@ -3,21 +3,21 @@ from flask_login import login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app import app, db
-from app.forms import artistForm, loginForm, registerForm, eventForm, venueForm
+from app.forms import *
 from app.models import *
-
 
 
 @app.route('/')
 @app.route('/landing')
 def landing():
-    return render_template('Landing.html',title='Landing')
+    return render_template('Landing.html', title='Landing')
 
 
 @app.route('/artistlist')
 def artistlist():
     artists=Artist.query.all()
     return render_template('Artists.html', artists=artists, title='Artists')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -30,6 +30,52 @@ def login():
         login_user(user)
         return redirect(url_for('landing'))
     return render_template('Login.html', form=form, title='Login')
+
+
+@app.route('/search', methods=['GET','POST'])
+def search():
+    searched = Product.query.all()
+    form = searchForm()
+    if form.validate_on_submit():
+        searched = Product.query.filter_by(name=form.searchable.data).all()
+    return render_template('search.html', searchable=searched, form=form, title='Search')
+
+
+@app.route('/user/<name>')
+def user(name):
+   if len(User.query.filter_by(username=name).all()) > 0:
+       chosenUser = User.query.filter_by(username=name).first()
+       chosenProducts = Product.query.filter_by(Id=chosenUser.id).all()
+       return render_template('user.html', title='User', userName=chosenUser.username, chosenUser=chosenUser,
+                              productList=chosenProducts)
+   else:
+       abort(404)
+
+
+@app.route('/product/<productName>')
+def product(productName):
+   if len(Product.query.filter_by(name=productName).all()) > 0:
+       chosenProduct=Product.query.filter_by(name=productName).first()
+       chosenUser=User.query.filter_by(id=chosenProduct.userId).first()
+       userName=chosenUser.username
+       return render_template('product.html', title='Product', name=productName, userPosting=userName,
+                              description=chosenProduct.description, date=chosenProduct.dateHarvested,
+                              productPrice=chosenProduct.price, amount=chosenProduct.amount)
+   else:
+       abort(404)
+
+
+@app.route('/newProduct', methods=['GET','POST'])
+def newProduct():
+   form = productForm()
+   if form.validate_on_submit():
+        flash('New product created: {}'.format(form.name.data))
+        newP = Product(name=form.name.data, description=form.description.data, price=form.price.data, amount=form.amount.data, dateHarvested=form.date.data, userId=4)
+        db.session.add(newP)
+        db.session.commit()
+        return redirect(url_for('landing'))
+   return render_template('newProduct.html', title='New Product', form=form)
+
 
 @app.route('/newartist', methods=['GET', 'POST'])
 @login_required
@@ -142,21 +188,36 @@ def populate_db():
     ate7 = ArtistToEvent(artistId=3, eventId=6)
     ate8 = ArtistToEvent(artistId=1, eventId=6)
 
-    v1=Venue(name='Adelide Acres', description='A')
+    v1 = Venue(name='Adelide Acres', description='A')
     v2 = Venue(name='Baltimore Barrelers', description='B')
     v3 = Venue(name='Canary Church', description='C')
 
     u1 = User(username='Peter',password='Tkaczyk')
     u1.set_password('Tkaczyk')
+    u2 = User(username='Old Man McFarmer', password='Farmlivin')
+    u2.set_password('Farmlivin')
+    u3 = User(username='Young Man McFarmer', password='ILovFarm')
+    u3.set_password('ILovFarm')
 
-    db.session.add_all([a1,a2,a3,a4,ate1,ate2,ate3,ate4,ate5,ate6,ate7,ate8,e1,e2,e3,e4,e5,e6,v1,v2,v3,u1])
+    p1 = Product(name='Eggs', amount = 12, dateHarvested = '12-12-2020', description = 'delicious eggs', price = '$0.99'
+                 , userId=1)
+    p2 = Product(name='Tomatoes', amount=20, dateHarvested='12-14-2020', description='delicious tomatoes', price='$1.99',
+                  userId=2)
+    p3 = Product(name='Beets', amount=30, dateHarvested='12-10-2020', description='delicious beets', price='$2.99'
+                 , userId=3)
+    p4 = Product(name='Bacon', amount=10, dateHarvested='11-20-2020', description='delicious bacon', price='$3.99',
+                  userId=2)
+    p5 = Product(name='Turnips', amount=40, dateHarvested='12-10-2020', description='delicious turnips', price='$4.99',
+                 userId=3)
+
+    db.session.add_all([u1, u2, u3, p1, p2, p3, p4, p5])
     db.session.commit()
     return "database has been populated."
+
 
 @app.route('/reset_db')
 def reset_db():
    flash("Resetting database: deleting old data and repopulating with dummy data")
-   # clear all data from all tables
    meta = db.metadata
    for table in reversed(meta.sorted_tables):
        print('Clear table {}'.format(table))
